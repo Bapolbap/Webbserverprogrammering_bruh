@@ -3,6 +3,31 @@ const app = express()
 const port = 3000
 const clientDir = __dirname + "\\MyFirstServer\\client\\"
 
+//mongoDB saker
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.on('open', function() {
+    //
+});
+
+const monkeySchema = new mongoose.Schema({
+    name: String,
+    email: String
+});
+
+monkeySchema.methods.speak = () => {
+    console.log("MONKEY MONKEY O O A A");
+    console.log("monkey name is " + this.name);
+}
+
+const Monkey = mongoose.model('Monkey', monkeySchema);
+
+//end of mongoDB saker
+
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

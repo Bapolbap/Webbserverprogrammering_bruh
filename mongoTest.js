@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/bruh', {useNewUrlParser: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -8,23 +8,23 @@ db.on('open', function() {
 });
 
 const monkeySchema = new mongoose.Schema({
-    name: String
+    name: String,
+    age: Number
 });
+
+monkeySchema.methods.speak = () => {
+    console.log("MONKEY MONKEY O O A A");
+    console.log("monkey name is " + this.name);
+}
 
 const Monkey = mongoose.model('Monkey', monkeySchema);
 
-const silence = new Monkey({ name: 'Silence'});
-console.log(silence.name);
+const diddy = new Monkey({ name: 'Diddy', age: 1});
+const silence = new Monkey({ name: 'Silence', age: 12});
+const chunky = new Monkey({ name: 'chunky', age: 123});
 
-monkeySchema.methods.speak = function () {
-    const greeting = this.name
-        ? "Monkey name is " + this.name
-        : "Monkey don't have name";
-    console.log(greeting);
-}
-
-const chunky = new Monkey({ name: 'chunky'});
-chunky.speak();
+diddy.save();
+silence.save();
 
 chunky.save(function (err, chunky) {
     if(err) return console.error(err);
