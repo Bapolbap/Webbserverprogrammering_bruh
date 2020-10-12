@@ -1,32 +1,10 @@
-const express = require('express')
-const app = express()
-const port = 3000
-const clientDir = __dirname + "\\MyFirstServer\\client\\"
-
-//mongoDB saker
+const express = require('express');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.on('open', function() {
-    //
-});
-
-const monkeySchema = new mongoose.Schema({
-    name: String,
-    email: String
-});
-
-monkeySchema.methods.speak = () => {
-    console.log("MONKEY MONKEY O O A A");
-    console.log("monkey name is " + this.name);
-}
-
-const Monkey = mongoose.model('Monkey', monkeySchema);
-
-//end of mongoDB saker
-
+const monkeyModel = require('./monkeyModel');
+const dBModule = require('./dBModule');
+const app = express();
+const port = 3000;
+const clientDir = __dirname + "\\MyFirstServer\\client\\";
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -44,8 +22,9 @@ app.get('/image', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-    console.log(req.body.name)
-    console.log(req.body.email)
+
+    dBModule.storePerson(monkeyModel.createMonkey(req.body.name, req.body.email, req.body.age, req.body.location))
+
     res.redirect('/')
 })
 
