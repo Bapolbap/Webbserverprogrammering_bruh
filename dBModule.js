@@ -7,7 +7,7 @@ db.on('open', function() {
     //PogChamp
 });
 
-exports.storePerson = (input) => {
+exports.storeInput = (input) => {
     input.save(() => {
         console.log("PogChamp")
     });
